@@ -1,0 +1,63 @@
+.header-test  {
+    height: 20px;
+    background-color: rgb(177, 213, 250);
+    color: rgb(255, 0, 0);
+}
+
+
+.header  {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgb(188, 219, 8);
+    color: rgb(219, 90, 180);
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+
+        .top-left {
+            display: flex;
+        }
+
+    }
+    .header-bottom {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+
+}
+
+
+.top-left {
+    margin: 6px;
+    background-color: rgb(255, 224, 137);
+
+}
+
+.top-right {
+    margin: 6px;
+    background-color: rgb(255, 224, 137);
+
+}
+
+.logo {
+    width: 50vw;
+    margin: 6px;
+    background-color: rgb(255, 224, 137);
+
+}
+
+.bottom-left {
+    margin: 6px;
+    background-color: rgb(255, 224, 137);
+
+}
+
+.bottom-right {
+    margin: 6px;
+    background-color: rgb(255, 224, 137);
+
+}
