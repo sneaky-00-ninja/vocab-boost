@@ -13,19 +13,19 @@ export default class Header extends Component {
                     <div className='header-links top-left'>
 
                         <div className="header-nav-link">
-                            <NavLink to="/" activeClassName="nav-link-active">
+                            <NavLink to="/" activeclassname="nav-link-active">
                             ._-= HOME =-_.
                             </NavLink>
                         </div>
 
                         <div className="header-nav-link">
-                            <NavLink to="/about" activeClassName="nav-link-active">
+                            <NavLink to="/about" activeclassname="nav-link-active">
                             ._-= About  =-_.
                             </NavLink>
                         </div>
 
                         <div className="header-nav-link">
-                            <NavLink to="/contact" activeClassName="nav-link-active">
+                            <NavLink to="/contact" activeclassname="nav-link-active">
                             ._-= Contact  =-_.
                             </NavLink>
                         </div>
@@ -39,7 +39,7 @@ export default class Header extends Component {
 
 
                         <div className="header-nav-link">
-                            <NavLink to="/login" activeClassName="nav-link-active">
+                            <NavLink to="/login" activeclassname="nav-link-active">
                                 ._-= Log In =-_.
                             </NavLink>
                         </div>
@@ -54,12 +54,12 @@ export default class Header extends Component {
                     <div className='header-links bottom-left'>
                     
                         <div className="header-nav-link">
-                            <NavLink to="/lesson" activeClassName="nav-link-active">
+                            <NavLink to="/lesson" activeclassname="nav-link-active">
                             ._-= Lessons =-_.
                             </NavLink>
                         </div>
                         <div className="header-nav-link">
-                            <NavLink to="/edit" activeClassName="nav-link-active">
+                            <NavLink to="/edit" activeclassname="nav-link-active">
                             ._-= Edit (Admins only) =-_.
                             </NavLink>
                         </div>
@@ -81,7 +81,7 @@ export default class Header extends Component {
 
                     <div className='header-links bottom-right'>
                         <div className="header-nav-link">
-                            <NavLink to="/signup" activeClassName="nav-link-active">
+                            <NavLink to="/signup" activeclassname="nav-link-active">
                             ._-= Sign Up =-_.
                             </NavLink>
                             for full access
