@@ -11,6 +11,7 @@ import Contact from "./components/pages/contact";
 import Login from "./components/pages/login";
 import Signup from "./components/pages/signup";
 import Lesson from "./components/pages/lesson";
+import Edit from "./components/pages/edit";
 import NoPage from "./components/pages/no-page";
 
 import './App.css';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/lesson" element={<Lesson />} />
+          <Route path="/edit" element={<Edit />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
 

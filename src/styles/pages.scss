@@ -1,0 +1,42 @@
+.general-page {
+    height: 650px;
+    color: blanchedalmond;
+ //   background-color: darkslategrey;
+}
+
+.general-grey {
+    color: blanchedalmond;
+    background-color: darkslategrey;
+}
+
+.homepage {
+    color: lightyellow;
+    background-color: darkblue;
+}
+
+
+
+
+.editor-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 600px;
+}
+
+.lesson-editor {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.box {
+    //padding: 7px white;
+    border: solid 5px rgb(218, 206, 206);
+    background-color: rgb(26, 134, 230);
+}
+
+.manage {
+    text-align: left;
+
+}

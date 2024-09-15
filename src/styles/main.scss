@@ -1,16 +1,13 @@
 @import "./header.scss";
 @import "./footer.scss";
+@import "./pages.scss";
+@import "./helpers.scss";
 
 
+body {
+    background-color: Canvas;
+    color: CanvasText;
+    color-scheme: light dark;
+  }
 
 
-.general {
-    color: blanchedalmond;
-    background-color: darkgrey;
-}
-
-.homepage {
-    height: 150px;
-    color: lightyellow;
-    background-color: darkblue;
-}
