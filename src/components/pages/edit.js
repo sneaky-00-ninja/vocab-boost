@@ -11,7 +11,10 @@ export default class Edit extends Component {
             description: '',
             loading: true,
             error: null,
-            success: false,
+            get_success: false,
+            put_success: false,
+            delete_success: false, 
+            create_success: false,
         };
     }
 
@@ -21,32 +24,36 @@ export default class Edit extends Component {
     }
 
 
-  fetchLesson = () => {
-    const { lessonId } = this.state;
+    fetchLesson = () => {
+        const { lessonId } = this.state;
 
-    if (!lessonId) {
-      this.setState({ error: "No such lesson ID." });
-      return;
-    }
-
-
+        if (!lessonId) {
+        this.setState({ error: "No lesson ID entered." });
+        return;
+        }
 
         this.setState({ loading: true, error: null });
 
         
-        fetch(`http://127.0.0.1:5000/lesson/${lessonId}`)   // Fetch lesson data from the API
+        fetch(`http://127.0.0.1:5000/lesson/${lessonId}`)   
           .then(response => {
+            if (response.status === 404) {   // ##error 404:; Not Found !
+                throw new Error('Lesson not found');
+            }
             if (!response.ok) {
               throw new Error('Failed to fetch lesson data');
             }
             return response.json();
           })
-          .then(data => {            // Populate form with fetched lesson data
+          .then(data => {           
             this.setState({
               title: data.title,
               description: data.description,
               loading: false,
-              success: true,
+              get_success: true,
+              put_success: false,
+              delete_success: false, 
+              create_success: false,
             });
           })
           .catch(error => {
@@ -68,9 +75,6 @@ export default class Edit extends Component {
 
 
 
-
-
-
     // Send a PUT request to update the lesson
     fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {
         method: 'PUT',
@@ -87,7 +91,12 @@ export default class Edit extends Component {
         })
         .then(data => {
           console.log('Lesson updated:', data);
-          this.setState({ success: true, error: null }); 
+          this.setState({ 
+            get_success: false,
+            put_success: true,
+            delete_success: false, 
+            create_success: false,
+            error: null }); 
         })
         .catch(error => {
           this.setState({ error: error.message });
@@ -98,9 +107,47 @@ export default class Edit extends Component {
 
 
 
+    handleDeleteLesson = (lessonId) => {
+        if (!lessonId) {
+            this.setState({ error: 'No lesson ID specified' });
+            return;
+        }
+        const confirmLessonDelete = window.confirm('ARE YOU SURE you want to delete that ???');     // TODO ... ADD `${lessonId}`
+            if (confirmLessonDelete ) {
+                fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {  
+                method: 'DELETE',
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                    throw new Error('Failed to delete lesson');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('Lesson deleted:', data);
+                    this.setState({ 
+                        get_success: false,
+                        put_success: false,
+                        delete_success: true, 
+                        create_success: false,
+                        error: null,                 
+                        title: '',  
+                        description: '',
+                        lessonId: ''
+                    }); 
+                })
+                .catch(error => {
+                    this.setState({ error: error.message });
+                });
+            }
+        };
+
+
+
+
 
     render() {
-        const { lessonId, title, description, loading, error, success } = this.state;
+        const { lessonId, title, description, loading, error, get_success, put_success, delete_success, create_success  } = this.state;
 
 
 
@@ -117,13 +164,18 @@ export default class Edit extends Component {
                 <div className='spacer60 '/>
 
                 <div className='editor-area'>
-                    {success && <p>Lesson updated successfully!</p>}  
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
 
 
                     <div className='lesson-editor box'>
                         LESSON EDITOR
                         <div className='spacer10 '/>
+                        <div>
+                            {get_success && <p>Lesson retrieved !</p>}  
+                            {put_success && <p>Lesson updated successfully!</p>}  
+                            {delete_success && <p>Lesson was deleted!</p>}  
+                            {create_success && <p>New lesson created successfully!</p>}  
+                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                        </div>
                         <div className='manage box'>  
                             <button onClick={this.fetchLesson}>Get Lesson</button>
 
@@ -145,7 +197,7 @@ export default class Edit extends Component {
                                     <input
                                     type="number"
                                     id="lessonId"
-                                    name="lessonId"  // Important for handleInputChange to work dynamically
+                                    name="lessonId" 
                                     min="1" max="100"
                                     value={lessonId}
                                     onChange={this.handleInputChange}
@@ -157,7 +209,7 @@ export default class Edit extends Component {
                                     <input
                                     type="text"
                                     id="title"
-                                    name="title"  // Important for handleInputChange to work dynamically
+                                    name="title"  
                                     minlength="3" maxlength="40" size="40"
                                     value={title}
                                     onChange={this.handleInputChange}
@@ -168,7 +220,7 @@ export default class Edit extends Component {
                                     <label htmlFor="description">Description:</label>
                                     <input
                                     id="description"
-                                    name="description"  // Important for handleInputChange to work dynamically
+                                    name="description"  
                                     minlength="3" maxlength="80" size="80"
                                     value={description}
                                     onChange={this.handleInputChange}
@@ -179,10 +231,14 @@ export default class Edit extends Component {
                             </form>
                      
 
+
                         </div>
                         <div className='manage box'>  
-                            <button>Delete lesson</button> Delete lesson shown above? 
+                            <button onClick={() => this.handleDeleteLesson(lessonId)}> Delete lesson ID shown above? </button>
                         </div>
+
+
+
                         <div className='spacer60 '/>
                         <div className='manage box'>  
                             <button>Create lesson</button>  
@@ -253,6 +309,7 @@ export default class Edit extends Component {
                         </div>
 
                     </div> */}
+
                 </div>
 
 
