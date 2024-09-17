@@ -9,6 +9,8 @@ export default class Edit extends Component {
             lessonId: '', 
             title: '',
             description: '',
+            newTitle: '', 
+            newDescription: '', 
             loading: true,
             error: null,
             get_success: false,
@@ -24,6 +26,7 @@ export default class Edit extends Component {
     }
 
 
+        //  Fetch submission to update the lesson (GET)
     fetchLesson = () => {
         const { lessonId } = this.state;
 
@@ -33,11 +36,11 @@ export default class Edit extends Component {
         }
 
         this.setState({ loading: true, error: null });
-
-        
+                
+        //    GET request 
         fetch(`http://127.0.0.1:5000/lesson/${lessonId}`)   
           .then(response => {
-            if (response.status === 404) {   // ##error 404:; Not Found !
+            if (response.status === 404) {              // ## for error 404:; Not Found !
                 throw new Error('Lesson not found');
             }
             if (!response.ok) {
@@ -45,7 +48,8 @@ export default class Edit extends Component {
             }
             return response.json();
           })
-          .then(data => {           
+          .then(data => {        
+            console.log('Lesson details retrieved:', data);   
             this.setState({
               title: data.title,
               description: data.description,
@@ -59,48 +63,47 @@ export default class Edit extends Component {
           .catch(error => {
             this.setState({ error: error.message, loading: false });
           });
-      }
+    }
 
 
-
-    // Handle form submission to update the lesson
+        // Handle form submission to update the lesson (PUT)
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const { lessonId, title, description } = this.state;
-     //   const {  } = this.props;
+        const { lessonId, title, description, newTitle, newDescription } = this.state;
 
-        // Create the payload with the updated title and description
-        const updatedLesson = { lessonId, title, description };
+        // Create payload with updated title and description... or creating NEW ones
+        const updatedLesson = { lessonId, title, description, newTitle, newDescription };
 
+        this.setState({ loading: true, error: null });
 
-
-    // Send a PUT request to update the lesson
-    fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedLesson),
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to update lesson');
-          }
-          return response.json();
+            //    PUT request to update the lesson
+        fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedLesson),
         })
-        .then(data => {
-          console.log('Lesson updated:', data);
-          this.setState({ 
-            get_success: false,
-            put_success: true,
-            delete_success: false, 
-            create_success: false,
-            error: null }); 
-        })
-        .catch(error => {
-          this.setState({ error: error.message });
-        });
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update lesson');
+            }
+            return response.json();
+            })
+            .then(data => {
+            console.log('Lesson updated:', data);
+            this.setState({ 
+                loading: false,
+                get_success: false,
+                put_success: true,
+                delete_success: false, 
+                create_success: false,
+                error: null }); 
+            })
+            .catch(error => {
+            this.setState({ error: error.message, loading: false  });
+            });
     }
 
 
@@ -146,15 +149,61 @@ export default class Edit extends Component {
 
 
 
+
+        handleNewSubmit = (event) => {
+            event.preventDefault();
+    
+            const { newTitle, newDescription } = this.state;
+    
+            // Create  payload for new title and description
+            const newLesson = { title: newTitle, description: newDescription };
+
+            this.setState({ loading: true, error: null });
+                       
+        // Send a POST request for new lesson
+            fetch(`http://127.0.0.1:5000/lesson`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newLesson),
+            })
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to create lesson');
+                }
+                return response.json();
+                })
+                .then(data => {
+                console.log('Lesson updated:', data);
+                this.setState({ 
+                    loading: false,
+                    get_success: false,
+                    put_success: false,
+                    delete_success: false, 
+                    create_success: true,
+                    error: null }); 
+                })
+                .catch(error => {
+                this.setState({ error: error.message, loading: false });
+                });
+        }
+
+
+
+
+
+
+
+
+
     render() {
         const { lessonId, title, description, loading, error, get_success, put_success, delete_success, create_success  } = this.state;
-
-
-
 
         return (
 
             <div className='general-page edit'>
+
 
 
                 <div>
@@ -162,9 +211,7 @@ export default class Edit extends Component {
                     <h3> Under construction </h3>
                 </div>
                 <div className='spacer60 '/>
-
                 <div className='editor-area'>
-
 
                     <div className='lesson-editor box'>
                         LESSON EDITOR
@@ -176,6 +223,8 @@ export default class Edit extends Component {
                             {create_success && <p>New lesson created successfully!</p>}  
                             {error && <p style={{ color: 'red' }}>{error}</p>}
                         </div>
+
+                        {/* Section for retieving a lesson.  */}
                         <div className='manage box'>  
                             <button onClick={this.fetchLesson}>Get Lesson</button>
 
@@ -190,6 +239,8 @@ export default class Edit extends Component {
                                 max="100" 
                             />
                         </div>
+                        
+                        {/* Section for updateing a lesson.  */}
                         <div className='manage box'>  
                             <form onSubmit={this.handleSubmit}>
                                 <div>
@@ -229,27 +280,52 @@ export default class Edit extends Component {
                                 </div>
                                 <button type="submit">Save Changes</button>
                             </form>
-                     
-
-
                         </div>
+
+
+                        {/* Section for deleting a lesson.  */}
                         <div className='manage box'>  
                             <button onClick={() => this.handleDeleteLesson(lessonId)}> Delete lesson ID shown above? </button>
                         </div>
-
-
-
                         <div className='spacer60 '/>
+                            
+
+                        {/* Section for creating a lesson.  */}
                         <div className='manage box'>  
-                            <button>Create lesson</button>  
-                            <br/>                           
-                            Lesson title
-                            <input type="text" id="new_lesson_title" name="new_lesson_title" required minlength="3" maxlength="40" size="40" />
-                            <br/>
-                            Lesson description 
-                            <input type="text" id="new_lesson_description" name="new_lesson_description" required minlength="3" maxlength="80" size="80" />
+                            <form onSubmit={this.handleNewSubmit}>
+                                <div>
+                                    <label htmlFor="title">New Lesson Title:</label>
+                                    <input
+                                    type="text"
+                                    id="newTitle"
+                                    name="newTitle"  
+                                    minlength="3" maxlength="40" size="40"
+                                    value={this.state.newTitle}
+                                    onChange={this.handleInputChange}
+                                    required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="description">New Lesson Description:</label>
+                                    <input
+                                    id="newDescription"
+                                    name="newDescription"  
+                                    minlength="3" maxlength="80" size="80"
+                                    value={this.state.newDescription}
+                                    onChange={this.handleInputChange}
+                                    required
+                                    />
+                                </div>
+                                <button type="submit">Create New Lesson</button>
+                    
+                            </form>
                         </div>
+
                         <div className='spacer60 '/>
+
+
+
+                        {/* Section for showing all lessons.  */}
                         <div className='manage box'>  
                             <button>Show all lessons</button> 
                             <br/>**Under construction** 
