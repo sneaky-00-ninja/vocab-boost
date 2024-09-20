@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: space-between;
     background-color:  rgb(126 175 244);
-    color: rgb(219, 90, 180);
+    color: rgb(82, 177, 206);
 
     .header-top-row {
         display: flex;
@@ -25,14 +25,19 @@
 
     }
 
+    .header-nav-link {
+        margin: 4px;
+    }
+
 
 }
 
 .header-links  {
     display: flex;
     margin: 6px;
-    background-color: rgb(255, 224, 137);
+    background-color: rgb(30, 39, 53);
     align-self: flex-end
+    
 }
 
 

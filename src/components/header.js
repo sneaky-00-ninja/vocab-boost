@@ -5,48 +5,55 @@ import logoImg from "../images/logo.png";
 
 export default class Header extends Component {
     render() {
+
+        const { handleLoginClick } = this.props;  
+        const { handleLogoutClick } = this.props;  
+
+
         return (
             <div className='header'>
 
                 <div className='header-top-row'>
 
                     <div className='header-links top-left'>
-
                         <div className="header-nav-link">
                             <NavLink to="/" activeclassname="nav-link-active">
                             ._-= HOME =-_.
                             </NavLink>
                         </div>
-
+                        <span/>
                         <div className="header-nav-link">
                             <NavLink to="/about" activeclassname="nav-link-active">
                             ._-= About  =-_.
                             </NavLink>
                         </div>
-
+                        <span/>
                         <div className="header-nav-link">
                             <NavLink to="/contact" activeclassname="nav-link-active">
                             ._-= Contact  =-_.
                             </NavLink>
                         </div>
-
+                        <span/>
+                        <div className='user-status'>
+                            User status : {this.props.admin ? "Admin" : "Guest"}
+                        </div>
                     </div>
                     
-
-
                     <div className='header-links top-right'>
-
-
-
                         <div className="header-nav-link">
                             <NavLink to="/login" activeclassname="nav-link-active">
-                                ._-= Log In =-_.
+                                ._-= Member Log In =-_.
                             </NavLink>
                         </div>
-
-                        <div> (Log out button) </div>
+                        <span/>
+                        <div> 
+                            <button onClick={handleLogoutClick}>
+                                Log Out
+                            </button>
+                         </div>
 
                     </div>
+
                 </div>
 
                 <div className='header-bottom-row'>
@@ -63,9 +70,7 @@ export default class Header extends Component {
                             ._-= Edit (Admins only) =-_.
                             </NavLink>
                         </div>
-
                     </div>
-
                     <div className='logo'
                         style={{
                             backgroundImage: `url(${logoImg})`,
@@ -76,11 +81,12 @@ export default class Header extends Component {
                         }}                    
                     
                     />
-
-
-
                     <div className='header-links bottom-right'>
                         <div className="header-nav-link">
+                            <button onClick={handleLoginClick}>
+                                Admin Log In
+                            </button>
+                            <span/> 
                             <NavLink to="/signup" activeclassname="nav-link-active">
                             ._-= Sign Up =-_.
                             </NavLink>
