@@ -3,6 +3,9 @@ import { NavLink } from "react-router-dom";
 import logoImg from "../images/logo.png";
 
 
+
+
+
 export default class Header extends Component {
     render() {
 
@@ -40,17 +43,36 @@ export default class Header extends Component {
                     </div>
                     
                     <div className='header-links top-right'>
-                        <div className="header-nav-link">
+
+
+
+
+                    {this.props.admin ? (
+                            <div> 
+                                <button onClick={handleLogoutClick}>
+                                    Log Out
+                                </button>
+                            </div>
+                                
+                        ) : (
+                            <div className="header-nav-link">
                             <NavLink to="/login" activeclassname="nav-link-active">
                                 ._-= Member Log In =-_.
                             </NavLink>
                         </div>
-                        <span/>
-                        <div> 
-                            <button onClick={handleLogoutClick}>
-                                Log Out
-                            </button>
-                         </div>
+                            )
+                        }
+
+
+
+
+
+
+
+
+
+
+
 
                     </div>
 
@@ -66,9 +88,12 @@ export default class Header extends Component {
                             </NavLink>
                         </div>
                         <div className="header-nav-link">
+
+                        {this.props.admin && 
                             <NavLink to="/edit" activeclassname="nav-link-active">
                             ._-= Edit (Admins only) =-_.
                             </NavLink>
+                        }
                         </div>
                     </div>
                     <div className='logo'
@@ -83,14 +108,23 @@ export default class Header extends Component {
                     />
                     <div className='header-links bottom-right'>
                         <div className="header-nav-link">
-                            <button onClick={handleLoginClick}>
-                                Admin Log In
-                            </button>
-                            <span/> 
-                            <NavLink to="/signup" activeclassname="nav-link-active">
-                            ._-= Sign Up =-_.
-                            </NavLink>
-                            for full access
+
+                        {this.props.admin ? (
+                            <div> Admin view active </div> 
+                        ) : (
+                            <div>  
+                                <button onClick={handleLoginClick}> Admin TEST Log In </button>
+                                <span/> 
+                                    Or...
+                                <NavLink to="/signup" activeclassname="nav-link-active">
+                                    ._-= Sign Up =-_.
+                                </NavLink>
+                                    for full access   
+                            </div> 
+                            )
+                        }
+
+                            
                         </div>
                     </div>
 

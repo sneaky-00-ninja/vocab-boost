@@ -7,11 +7,7 @@ export default class Login extends Component {
         this.state = {
             entryUsername: "", 
             entryPassword: "" , 
-            userType: "" , 
-            realUsername: "", 
-            realPassword: "" , 
-            GETusername: "" ,
-            GETpassword: "" ,
+        //    userType: "" , 
             error: null
         }
     }
@@ -46,21 +42,13 @@ export default class Login extends Component {
             });
     };
 
-    
-
-
-
-
 
     handleSubmit = (event) => {
         event.preventDefault();
 
         this.compareUserData();
-                
         // this.props.handleLogin(entryUsername, entryPassword);  
         // ***NOTE***   above live was moved in to the "fetch" above
-        
-
     }
 
     handleChange = (event) => {
@@ -73,62 +61,42 @@ export default class Login extends Component {
 
 
     render() {
-        const {  realUsername, realPassword } = this.props; 
         const { entryUsername, entryPassword } = this.state;
-         const { GETusername, GETpassword } = this.props;
 
         return (
             <div className='general-page'>
                 <div>
-                    <h1> Log in page. </h1>
-                    <h3> Under construction </h3>
-
-                    <h5> REAL Username: {realUsername} </h5>
-                    <h6> REAL Password: {realPassword} </h6>
-
-                    <h3> ENTRY Username: {entryUsername} </h3>
-                    <h3> ENTRY Password: {entryPassword} </h3>
-
-                    <h5> GET Username: {GETusername} </h5>
-                    <h5> GET Password: {GETpassword} </h5>
-
-
-
-
-
-
+                    {this.props.admin ? (
+                        <>
+                            <h1> You are logged in. </h1>
+                            <h5> Select a link in the page header to get to another page </h5>
+                        </>
+                    ) : (
+                        <div>
+                            <h3> Enter your username and password. </h3>
+                            <form onSubmit={this.handleSubmit}>
+                            <input
+                                type='text'                     
+                                name='entryUsername'
+                                placeholder='User Name'                     
+                                value={entryUsername}
+                                onChange={this.handleChange}
+                            />
+                            <input
+                                type='password'                     
+                                name='entryPassword'
+                                placeholder='User Password'                     
+                                value={entryPassword}
+                                onChange={this.handleChange}
+                            />
+                            <div>
+                                <button type='submit'> Login </button>
+                            </div>
+                            </form>
+                        </div>
+                    )
+                }
                 </div>
-                <div className='spacer60 '/>
-                <form onSubmit={this.handleSubmit}>
-                    <input
-                        type='text'                     
-                        name='entryUsername'
-                        placeholder='User Name'                     
-                        value={entryUsername}
-                        onChange={this.handleChange}
-                    />
-                    <input
-                        type='password'                     
-                        name='entryPassword'
-                        placeholder='User Password'                     
-                        value={entryPassword}
-                        onChange={this.handleChange}
-                    />
-                    <div>
-                        <button type='submit'> Login </button>
-                    </div>
-
-
-                </form>
-                
-                {/* <button onClick={this.fetchUserData}>    // TESTING BUTTON
-                    Fetch User Data
-                </button> */}
-
-
-
-
-
             </div>
         );
     }

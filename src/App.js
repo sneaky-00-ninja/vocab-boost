@@ -16,6 +16,13 @@ import NoPage from "./components/pages/no-page";
 import './App.css';
 import "./styles/main.scss";
 
+
+
+// TODO NEXT... 
+// Make sure that when you sign out from the EDIT page, you leave the edit page. 
+
+
+
 function App() {
 
 
@@ -61,6 +68,27 @@ function handleLogoutClick(){
 }
 
 
+const adminOnlyPages = () => {
+  return (
+    <Route
+      path="/login"
+      element={
+        <Login
+          admin={admin} 
+          handleLogin={handleLogin}
+          realUsername={realUsername}
+          realPassword={realPassword}
+          entryUsername={entryUsername}
+          entryPassword={entryPassword}
+        />
+      }
+    />
+  );
+};
+
+
+
+
   return (
     <div className="App">
         <Router>
@@ -79,24 +107,7 @@ function handleLogoutClick(){
                   entryUsername={entryUsername} 
                   entryPassword={entryPassword} 
               />} />   
-            {/* <Route path="/about" element={<About />} /> */}
-
-
-            <Route path="/login" 
-              element={
-                <Login 
-                  handleLogin={handleLogin} 
-                  realUsername={realUsername} 
-                  realPassword={realPassword} 
-                  entryUsername={entryUsername} 
-                  entryPassword={entryPassword} 
-                  // GETusername={GETusername} 
-                  // GETpassword={GETpassword} 
-
-            />} />
-            {/* <Route path="/login" element={<Login />} /> */}
-
-
+            { adminOnlyPages() }
             <Route path="/contact" element={<Contact />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/lesson" element={<Lesson />} />
