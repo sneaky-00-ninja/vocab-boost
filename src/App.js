@@ -22,16 +22,35 @@ function App() {
 
   const [admin, setAdmin] = useState(false);
   const [entryUsername, setEntryUsername] = useState("");
-  const [realUsername, setRealUsername] = useState("");
   const [entryPassword, setEntryPassword] = useState("");
-  const [realPassword, setRealPassword] = useState("");
+  // const [userType, setUserType] = useState("");
+  const [realUsername, setRealUsername] = useState("test");
+  const [realPassword, setRealPassword] = useState("123456");
+  // const [GETusername, setGETusername] = useState("abcd");
+  // const [GETpassword, setGETpassword] = useState("xxxx");
 
 
-  function login() {
-    if (entryUsername === realUsername && entryPassword === realPassword) {
+
+
+  //This worked for testing with password set locally (not from backend)
+// function handleLogin(entryUsername, entryPassword) {
+//   if (entryUsername === realUsername && entryPassword === realPassword)  {
+//     setAdmin(true);
+//     console.log("Login successful");
+//   } else {
+//     console.log("Login failed");
+//   }
+// }
+
+  function handleLogin(entryUsername, entryPassword) {
       setAdmin(true);
+      console.log("Login successful");
     }
-  }
+  
+
+
+
+
 
 function handleLoginClick(){
   setAdmin(true)
@@ -46,13 +65,39 @@ function handleLogoutClick(){
     <div className="App">
         <Router>
           <Header 
-            admin={admin} handleLoginClick={handleLoginClick} 
+            admin={admin} 
+            handleLoginClick={handleLoginClick} 
             handleLogoutClick={handleLogoutClick} />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
+
+            <Route path="/about" 
+              element={
+                <About 
+                  realUsername={realUsername} 
+                  realPassword={realPassword} 
+                  entryUsername={entryUsername} 
+                  entryPassword={entryPassword} 
+              />} />   
+            {/* <Route path="/about" element={<About />} /> */}
+
+
+            <Route path="/login" 
+              element={
+                <Login 
+                  handleLogin={handleLogin} 
+                  realUsername={realUsername} 
+                  realPassword={realPassword} 
+                  entryUsername={entryUsername} 
+                  entryPassword={entryPassword} 
+                  // GETusername={GETusername} 
+                  // GETpassword={GETpassword} 
+
+            />} />
+            {/* <Route path="/login" element={<Login />} /> */}
+
+
             <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/lesson" element={<Lesson />} />
             <Route path="/edit" element={<EditPage />} />

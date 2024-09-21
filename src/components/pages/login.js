@@ -9,55 +9,59 @@ export default class Login extends Component {
             entryPassword: "" , 
             userType: "" , 
             realUsername: "", 
-            realPassword: "" 
-
-
+            realPassword: "" , 
+            GETusername: "" ,
+            GETpassword: "" ,
+            error: null
         }
     }
+
+
+    compareUserData = () => {
+        fetch('http://localhost:5000/user/1')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                return response.json(); 
+            })
+            .then(data => {
+                this.setState({
+                    GETusername: data.user_name,
+                    GETpassword: data.user_password
+                }, () => {
+                    const { entryUsername, entryPassword, GETusername, GETpassword } = this.state;
+
+                    if (entryUsername === GETusername && entryPassword === GETpassword) {
+                        this.props.handleLogin(entryUsername, entryPassword);  
+                        console.log("Login successful");
+                    } else {
+                        console.log("Login failed");
+                    }
+                });
+            })
+            .catch(error => {
+                this.setState({ error: error.message });
+                console.log("Error fetching user data:", error);
+            });
+    };
+
+    
+
+
+
 
 
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const { entryUsername } = this.state;
-        const { entryPassword } = this.state;
-
-        // if (!entryUsername) {
-        //     this.setState({ error: "No lesson User Name entered." });
-        //     return;
-        //     }
-        // if (!entryPassword) {
-        //     this.setState({ error: "No lesson Password entered." });
-        //     return;
-        //     }
-        // this.setState({ loading: true, error: null });
-
-        // fetch(`http://127.0.0.1:5000/admin/1`)   
-
-        // then(response => {
-        //     if ( **** logic for NOT matching details) {             
-        //         throw new Error('User not found');
-        //     }
-        //     if (**** logic for matching details) {
-        //     *** this.setState for GRANTED
-        //     }
-        //     return response.json();
-        // })
-        // .catch(error => {
-        //     this.setState({ error: error.message, loading: false });
-        // });
-
-        console.log("Entry attempt clicked", event);
-
-
-
+        this.compareUserData();
+                
+        // this.props.handleLogin(entryUsername, entryPassword);  
+        // ***NOTE***   above live was moved in to the "fetch" above
+        
 
     }
-
-
-
-
-
 
     handleChange = (event) => {
         this.setState({
@@ -67,12 +71,28 @@ export default class Login extends Component {
 
 
 
+
     render() {
+        const {  realUsername, realPassword } = this.props; 
+        const { entryUsername, entryPassword } = this.state;
+         const { GETusername, GETpassword } = this.props;
+
         return (
             <div className='general-page'>
                 <div>
                     <h1> Log in page. </h1>
                     <h3> Under construction </h3>
+
+                    <h5> REAL Username: {realUsername} </h5>
+                    <h6> REAL Password: {realPassword} </h6>
+
+                    <h3> ENTRY Username: {entryUsername} </h3>
+                    <h3> ENTRY Password: {entryPassword} </h3>
+
+                    <h5> GET Username: {GETusername} </h5>
+                    <h5> GET Password: {GETpassword} </h5>
+
+
 
 
 
@@ -84,14 +104,14 @@ export default class Login extends Component {
                         type='text'                     
                         name='entryUsername'
                         placeholder='User Name'                     
-                        value={this.state.entryUsername}
+                        value={entryUsername}
                         onChange={this.handleChange}
                     />
                     <input
                         type='password'                     
                         name='entryPassword'
                         placeholder='User Password'                     
-                        value={this.state.entryPassword}
+                        value={entryPassword}
                         onChange={this.handleChange}
                     />
                     <div>
@@ -100,6 +120,10 @@ export default class Login extends Component {
 
 
                 </form>
+                
+                {/* <button onClick={this.fetchUserData}>    // TESTING BUTTON
+                    Fetch User Data
+                </button> */}
 
 
 
