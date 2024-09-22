@@ -38,7 +38,7 @@ export default class Lesson extends Component {
         }));
     }
     // TODO add a notification text on page when last item in lesson is reached. 
-    // TODO priorStep   !!!!!
+
 
     //  move to the previous vocab line
     previousVocabItem = () => {
@@ -71,14 +71,7 @@ export default class Lesson extends Component {
             return <div>Error: {error}</div>;
         }
 
-        //  show message if loading
-
-        // if (lessonVocabList.length === 0) {
-        //     return <div>Loading...</div>;
-        // }
-
-
-        // Get the current vocab item
+ 
         const currentVocab = lessonVocabList[currentIndex];
 
 

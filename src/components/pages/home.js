@@ -1,15 +1,38 @@
 import React, { Component } from 'react';
 
+import Carousel from "../carousel";
+
+
 export default class Home extends Component {
     render() {
         return (
             <div className='general-page homepage'>
-                <div>
-                    <h1> Home page </h1>
-                    <h3> Under construction </h3>
+
+                <div> 
+                    <Carousel/>
                 </div>
-                <div className='spacer10 '/>
-                <h2>                    Image carousel to go here.                </h2>
+
+                <div>
+                    <h3> Current languages available: </h3>
+
+                    <ul style={{ listStyleType: 'none' }}>
+                        <li>
+                            English                            
+                        </li>
+                        <li>
+                            Basque
+                        </li>
+                    </ul>
+
+                    <h3> Coming soon: </h3>
+                    <ul style={{ listStyleType: 'none' }}>
+                        <li>
+                            Spanish                            
+                        </li>
+        
+                    </ul>
+                </div>
+
             </div>
 
         );

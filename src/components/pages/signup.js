@@ -5,10 +5,10 @@ export default class Signup extends Component {
         return (
             <div className='general-page'>
                 <div>
-                    <h1> sign up page. </h1>
-                    <h3> Under construction </h3>
+                    <h1> Sign up ... </h1>
+                    <h3> New membership is not currently available. </h3>
+                    <h4> Please try again another day. </h4>
                 </div>
-                <div className='spacer60 '/>
             </div>
         );
     }

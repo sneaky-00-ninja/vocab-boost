@@ -5,8 +5,9 @@ export default class Contact extends Component {
         return (
             <div className='general-page general-grey'>
                 <div>
-                    <h1> Contact page </h1>
-                    <h3> Under construction </h3>
+                    <h1> Contact Us </h1>
+                    <h3>Not yet available.</h3>
+                    <h5> ( You could try sending an email to <strong>testing@testing.com</strong> )</h5>
                 </div>
                 <div className='spacer60 '/>
             </div>

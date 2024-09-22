@@ -95,24 +95,17 @@ const adminOnlyPages = () => {
           <Header 
             admin={admin} 
             handleLoginClick={handleLoginClick} 
-            handleLogoutClick={handleLogoutClick} />
+            handleLogoutClick={handleLogoutClick} 
+          />
           <Routes>
             <Route path="/" element={<Home />} />
-
-            <Route path="/about" 
-              element={
-                <About 
-                  realUsername={realUsername} 
-                  realPassword={realPassword} 
-                  entryUsername={entryUsername} 
-                  entryPassword={entryPassword} 
-              />} />   
-            { adminOnlyPages() }
+            <Route path="/about" element={<About/>} />   
             <Route path="/contact" element={<Contact />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/lesson" element={<Lesson />} />
             <Route path="/edit" element={<EditPage />} />
             <Route path="*" element={<NoPage />} />
+            { adminOnlyPages() }
         </Routes>
 
 
@@ -123,9 +116,6 @@ const adminOnlyPages = () => {
   rel="noopener noreferrer" > Learn React </a> </header> 
 </div>  */}
 
-          <div className="footer-test">
-            Foota DIV test    (40 px high)
-          </div>
           <Footer />
       </Router>
     </div>
