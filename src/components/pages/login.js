@@ -73,7 +73,7 @@ export default class Login extends Component {
                         </>
                     ) : (
                         <div>
-                            <h3> Enter your username and password. </h3>
+                            <h3> Enter username and password. </h3>
                             <form onSubmit={this.handleSubmit}>
                             <input
                                 type='text'                     

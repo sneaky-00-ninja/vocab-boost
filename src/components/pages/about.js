@@ -13,7 +13,7 @@ export default class About extends Component {
         return (
             <div className='general-page about'>
                 <div>
-                    <h1> About page </h1>
+                    <h1> About </h1>
                     <p>  
                         The inspiration for this react application comes from the 
                         lack of Basque Language learning resources freely available. 

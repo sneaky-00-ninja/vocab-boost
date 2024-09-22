@@ -1,3 +1,6 @@
+// TODO NEXT .... fix the GET, PUT, and DELETE  for vocab,  !!!
+
+
 import React, { Component, useState, useEffect } from 'react';
 
 export default class Edit extends Component {
@@ -11,14 +14,29 @@ export default class Edit extends Component {
             description: '',
             newTitle: '', 
             newDescription: '', 
-            loading: true,
-            error: null,
             get_success: false,
             put_success: false,
             delete_success: false, 
             create_success: false,
+            
+            vocabId: '', 
+            englishVocab: '',
+            basqueVocab: '',
+            newEnglishVocab: '', 
+            newBasqueVocab: '', 
+            vocabLessonNumber: '',
+            lesson_id: '',
+            
+            get_vocab_success: false,
+            put_vocab_success: false,
+            delete_vocab_success: false, 
+            create_vocab_success: false,
+
+            loading: true,
+            error: null,
         };
     }
+
 
     handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -197,8 +215,218 @@ export default class Edit extends Component {
 
 
 
+
+
+
+        // Vocab section ... 
+
+        handleNewVocabInputChange = (event) => {
+            const { name, value } = event.target;
+            // If the name is 'english' or 'basque', update the correct state variable
+            const stateName = name === 'english' ? 'englishVocab' : name === 'basque' ? 'basqueVocab' : name;
+            this.setState({ [stateName]: value });
+    }
+
+        //  Fetch submission to update the vocab (GET)
+        fetchvocab = () => {
+            const { vocabId } = this.state;
+    
+            if (!vocabId) {
+            this.setState({ error: "No vocab ID entered." });
+            return;
+            }
+    
+            this.setState({ loading: true, error: null });
+                    
+            //    GET request 
+            fetch(`http://127.0.0.1:5000/vocab/${vocabId}`)   
+              .then(response => {
+                if (response.status === 404) {              // ## for error 404:; Not Found !
+                    throw new Error('vocab not found');
+                }
+                if (!response.ok) {
+                  throw new Error('Failed to fetch vocab data');
+                }
+                return response.json();
+              })
+              .then(data => {        
+                console.log('vocab details retrieved:', data);   
+                this.setState({
+                  englishVocab: data.englishVocab,
+                  basqueVocab: data.basqueVocab,
+                  loading: false,
+                  get_vocab_success: true,
+                  put_vocab_success: false,
+                  delete_vocab_success: false, 
+                  create_vocab_success: false,
+                });
+              })
+              .catch(error => {
+                this.setState({ error: error.message, loading: false });
+              });
+        }
+    
+    
+
+
+
+        // TODO       *** add lesson number ****
+
+            // Handle form submission to update the vocab (PUT)
+            handleVocabSubmit = (event) => {
+            event.preventDefault();
+    
+            const { vocabId, englishVocab, basqueVocab, newEnglishVocab, newBasqueVocab } = this.state;
+    
+            // Create payload with updated englishVocab and basqueVocab... or creating NEW ones
+            const updatedvocab = { vocabId, english: englishVocab, basque: basqueVocab, newEnglishVocab, newBasqueVocab };
+    
+            this.setState({ loading: true, error: null });
+    
+                //    PUT request to update the vocab
+            fetch(`http://127.0.0.1:5000/vocab/${vocabId}`, {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedvocab),
+            })
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update vocab');
+                }
+                return response.json();
+                })
+                .then(data => {
+                console.log('vocab updated:', data);
+                this.setState({ 
+                    loading: false,
+                    get_vocab_success: false,
+                    put_vocab_success: true,
+                    delete_vocab_success: false, 
+                    create_vocab_success: false,
+                    error: null }); 
+                })
+                .catch(error => {
+                this.setState({ error: error.message, loading: false  });
+                });
+        }
+    
+    
+    
+    
+    
+        handleDeletevocab = (vocabId) => {
+            if (!vocabId) {
+                this.setState({ error: 'No vocab ID specified' });
+                return;
+            }
+            const confirmvocabDelete = window.confirm('ARE YOU SURE you want to delete this vocab ???');     // TODO ... ADD `${vocabId}`
+                if (confirmvocabDelete ) {
+                    fetch(`http://127.0.0.1:5000/vocab/${vocabId}`, {  
+                    method: 'DELETE',
+                    })
+                    .then((response) => {
+                        if (!response.ok) {
+                        throw new Error('Failed to delete vocab');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log('vocab deleted:', data);
+                        this.setState({ 
+                            get_vocab_success: false,
+                            put_vocab_success: false,
+                            delete_vocab_success: true, 
+                            create_vocab_success: false,
+                            error: null,                 
+                            englishVocab: '',  
+                            basqueVocab: '',
+                            vocabId: ''
+                        }); 
+                    })
+                    .catch(error => {
+                        this.setState({ error: error.message });
+                    });
+                }
+            };
+    
+    
+    
+    
+    
+    
+            handleNewVocabSubmit = (event) => {
+                event.preventDefault();
+        
+                const { newEnglishVocab, newBasqueVocab, vocabLessonNumber ,lesson_id } = this.state;
+        
+                // Create  payload for new englishVocab and basqueVocab
+                const newvocab = { english: newEnglishVocab, basque: newBasqueVocab, lesson_id: lesson_id };
+    
+                this.setState({ loading: true, error: null });
+                           
+            // Send a POST request for new vocab
+                fetch(`http://127.0.0.1:5000/vocab`, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newvocab),
+                })
+                    .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to create vocab');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                    console.log('vocab updated:', data);
+                    this.setState({ 
+                        loading: false,
+                        get_vocab_success: false,
+                        put_vocab_success: false,
+                        delete_vocab_success: false, 
+                        create_vocab_success: true,
+                        error: null }); 
+                    })
+                    .catch(error => {
+                    this.setState({ error: error.message, loading: false });
+                    });
+            }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     render() {
-        const { lessonId, title, description, loading, error, get_success, put_success, delete_success, create_success  } = this.state;
+        const { 
+            lessonId, title, description, loading, error, 
+            get_success, put_success, delete_success, create_success, 
+            vocabId, englishVocab, basqueVocab, newEnglishVocab, newBasqueVocab, 
+            vocabLessonNumber,     english, basque,       lesson_id,
+            get_vocab_success, put_vocab_success, delete_vocab_success, create_vocab_success
+            } = this.state;
 
         return (
 
@@ -208,7 +436,6 @@ export default class Edit extends Component {
 
                 <div>
                     <h1> Editor page (for Admins only)  </h1>
-                    <h3> Under construction </h3>
                 </div>
                 <div className='spacer60 '/>
                 <div className='editor-area'>
@@ -285,7 +512,7 @@ export default class Edit extends Component {
 
                         {/* Section for deleting a lesson.  */}
                         <div className='manage box'>  
-                            <button onClick={() => this.handleDeleteLesson(lessonId)}> Delete lesson ID shown above? </button>
+                            <button onClick={() => this.handleDeleteLesson(lessonId)}> Delete lesson with ID shown above? </button>
                         </div>
                         <div className='spacer60 '/>
                             
@@ -335,18 +562,114 @@ export default class Edit extends Component {
 
 
 
-                    {/* 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             
                     <div className='vocab-editor box'>
                         VOCAB EDITOR
                         <div className='spacer10 '/>
+                        <div>
+                            {get_vocab_success && <p>Vocab retrieved !</p>}  
+                            {put_vocab_success && <p>Vocab updated successfully!</p>}  
+                            {delete_vocab_success && <p>Vocab was deleted!</p>}  
+                            {create_vocab_success && <p>New Vocab created successfully!</p>}  
+                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                        </div>
+
+                        {/* Section for retieving vocab.  */}
+
                         <div className='manage box'>  
-                            <button>Get vocab</button>  
+
+                            <button onClick={this.fetchVocab}>Get Vocab</button>
+
+                            <label htmlFor="get_vocab_id">Enter vocab ID#: </label>
+                            <input 
+                                type="number" 
+                                id="get_vocab_id" 
+                                name="vocabId" 
+                                value={vocabId} 
+                                onChange={this.handleInputChange} 
+                                min="1" 
+                                max="5000" 
+                            />
+
+                            {/* <button>Get vocab</button>  
                             <br/>
                             <label for="get_vocab_id">Enter vocab ID#: </label>
-                            <input type="number" id="get_vocab_id" name="vocab_number" min="1" max="100"  /> 
+                            <input type="number" id="get_vocab_id" name="vocab_number" min="1" max="100"  />  */}
                         </div>
+                        
+
+                        {/* Section for updating vocab.  */}
+
                         <div className='manage box'>  
-                            <button>Edit vocab</button>  
+
+
+                            <form onSubmit={this.handleVocabSubmit}>
+                                <div>
+                                    <label htmlFor="vocabId">vocab ID:</label>
+                                    <input
+                                    type="number"
+                                    id="vocabId"
+                                    name="vocabId" 
+                                    min="1" max="5000"
+                                    value={vocabId}
+                                    onChange={this.handleInputChange}
+                                    required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="lesson_id">Lesson Number:</label>
+                                    <input
+                                    type="number"
+                                    id="lesson_id"
+                                    name="lesson_id" 
+                                    min="1" max="100"
+                                    value={vocabId}
+                                    onChange={this.handleInputChange}
+                                    required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="english">Vocab English:</label>
+                                    <input
+                                    type="text"
+                                    id="english"
+                                    name="english"  
+                                    minlength="3" maxlength="40" size="40"
+                                    value={this.state.englishVocab}
+                                    // value={english}   ***PREVIOUS***
+                                    onChange={this.handleInputChange}
+                                    required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="basque">Vocab Basque:</label>
+                                    <input
+                                    id="basque"
+                                    name="basque"  
+                                    minlength="3" maxlength="40" size="40"
+                                    value={this.state.basqueVocab}
+                                    // value={basque} ***PREVIOUS***
+                                    onChange={this.handleInputChange}
+                                    required
+                                    />
+                                </div>
+                                <button type="submit">Save Changes</button>
+                            </form>
+                            {/* <button>Edit vocab</button>  
                             <br/>
                             Vocab ID 
                             <input type="number" id="vocab_id" name="vocab_number" min="1" max="100" />
@@ -359,13 +682,76 @@ export default class Edit extends Component {
                             <br/>
                             Vocab Basque 
                             <input type="text" id="vocab_basque" name="vocab_basque" required minlength="1" maxlength="40" size="40" />
+                         */}
                         </div>
+
+
+
+                        
+                        {/* Section for deleting vocab.  */}
                         <div className='manage box'>  
-                            <button>Delete vocab</button> Delete vocab shown above? 
+                            <button onClick={() => this.handleDeleteVocab(vocabId)}> Delete Vocab with ID shown above? </button>
                         </div>
                         <div className='spacer60 '/>
+                      
+                        {/* <div className='manage box'>  
+                            <button>Delete vocab</button> Delete vocab shown above? 
+                        </div>
+                        <div className='spacer60 '/> */}
+
+
+
+
+
+
+                        {/* Section for creating Vocab.  */}
                         <div className='manage box'>  
-                            <button>Create vocab</button>  
+
+                        <form onSubmit={this.handleNewVocabSubmit}>
+
+                                <div>
+                                    <label htmlFor="newVocabLessonNumber">For Lesson Number:</label>
+                                    <input
+                                    type="number"
+                                    id="lesson_id"
+                                    name="lesson_id" 
+                                    min="1" max="100"
+                                    value={this.state.lesson_id}
+                                    // value={lesson_id}  ***PREVIOUS***
+                                    onChange={this.handleNewVocabInputChange}
+                                    required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="newEnglishVocab">New English Vocab :</label>
+                                    <input
+                                    type="text"
+                                    id="newEnglishVocab"
+                                    name="newEnglishVocab"  
+                                    minlength="3" maxlength="40" size="40"
+                                    value={this.state.newEnglishVocab}
+                                    onChange={this.handleNewVocabInputChange}
+                                    required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="newBasqueVocab">New Basque Vocab :</label>
+                                    <input
+                                    id="newBasqueVocab"
+                                    name="newBasqueVocab"  
+                                    minlength="3" maxlength="40" size="40"
+                                    value={this.state.newBasqueVocab}
+                                    onChange={this.handleNewVocabInputChange}
+                                    required
+                                    />
+                                </div>
+                                <button type="submit">Create New Vocab</button>
+                    
+                            </form>
+
+
+                            {/* <button>Create vocab</button>  
                             <br/>                           
                             Lesson number
                             <input type="number" id="new_lesson_number" name="new_lesson_number" min="1" max="100"  />
@@ -375,16 +761,23 @@ export default class Edit extends Component {
                             <br/>
                             Vocab Basque 
                             <input type="text" id="new_vocab_description" name="new_vocab_description" required minlength="1"   maxlength="40" size="40" />
+                             */}
+                            
+                            
                             <div className='spacer60 '/>
+
                             <div className='manage box'>  
                                 <button>Show all vocab </button> 
                                 <br/>for lesson #                             
                                 <input type="number" id="lesson_number" name="lesson_number" min="1" max="100"  /> 
                                 <br/>**Under construction** 
                             </div>
+
+
                         </div>
 
-                    </div> */}
+                    </div> 
+               
 
                 </div>
 
