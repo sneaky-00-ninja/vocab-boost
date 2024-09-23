@@ -1,7 +1,4 @@
-// TODO NEXT .... fix the GET, PUT, and DELETE  for vocab,  !!!
-
-
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 
 export default class Edit extends Component {
 
@@ -25,6 +22,7 @@ export default class Edit extends Component {
             newEnglishVocab: '', 
             newBasqueVocab: '', 
             vocabLessonNumber: '',
+            newVocabLessonNumber: '',
             lesson_id: '',
             
             get_vocab_success: false,
@@ -41,10 +39,18 @@ export default class Edit extends Component {
     handleInputChange = (event) => {
         const { name, value } = event.target;
         this.setState({ [name]: value }); 
+
+        let stateName = name;
+        if (name === 'english') {
+            stateName = 'englishVocab';
+        } else if (name === 'basque') {
+            stateName = 'basqueVocab';
+        }
+        this.setState({ [stateName]: value });
     }
 
-
-        //  Fetch submission to update the lesson (GET)
+// *****--  LESSON section ...  --*****
+        //  Fetch submission to update the lesson (GET)     
     fetchLesson = () => {
         const { lessonId } = this.state;
 
@@ -55,10 +61,11 @@ export default class Edit extends Component {
 
         this.setState({ loading: true, error: null });
                 
-        //    GET request 
+        
+        //    GET request  // *****-- LESSON --*****
         fetch(`http://127.0.0.1:5000/lesson/${lessonId}`)   
           .then(response => {
-            if (response.status === 404) {              // ## for error 404:; Not Found !
+            if (response.status === 404) {            // ## for error 404:; Not Found !
                 throw new Error('Lesson not found');
             }
             if (!response.ok) {
@@ -84,8 +91,8 @@ export default class Edit extends Component {
     }
 
 
-        // Handle form submission to update the lesson (PUT)
-    handleSubmit = (event) => {
+            // Handle form submission to update the lesson (PUT)     
+            handleSubmit = (event) => {
         event.preventDefault();
 
         const { lessonId, title, description, newTitle, newDescription } = this.state;
@@ -124,16 +131,13 @@ export default class Edit extends Component {
             });
     }
 
-
-
-
-
+        //    (DELETE).....  LESSON 
     handleDeleteLesson = (lessonId) => {
         if (!lessonId) {
             this.setState({ error: 'No lesson ID specified' });
             return;
         }
-        const confirmLessonDelete = window.confirm('ARE YOU SURE you want to delete that ???');     // TODO ... ADD `${lessonId}`
+        const confirmLessonDelete = window.confirm('ARE YOU SURE you want to delete that ???');     
             if (confirmLessonDelete ) {
                 fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {  
                 method: 'DELETE',
@@ -142,7 +146,7 @@ export default class Edit extends Component {
                     if (!response.ok) {
                     throw new Error('Failed to delete lesson');
                     }
-                    return response.json();
+                    return response.text(); 
                 })
                 .then((data) => {
                     console.log('Lesson deleted:', data);
@@ -163,11 +167,6 @@ export default class Edit extends Component {
             }
         };
 
-
-
-
-
-
         handleNewSubmit = (event) => {
             event.preventDefault();
     
@@ -178,7 +177,7 @@ export default class Edit extends Component {
 
             this.setState({ loading: true, error: null });
                        
-        // Send a POST request for new lesson
+        // Send a POST request for new lesson        
             fetch(`http://127.0.0.1:5000/lesson`, {
                 method: 'POST',
                 headers: {
@@ -208,18 +207,7 @@ export default class Edit extends Component {
         }
 
 
-
-
-
-
-
-
-
-
-
-
-        // Vocab section ... 
-
+// *****--  VOCAB section ...  --*****
         handleNewVocabInputChange = (event) => {
             const { name, value } = event.target;
             // If the name is 'english' or 'basque', update the correct state variable
@@ -227,8 +215,8 @@ export default class Edit extends Component {
             this.setState({ [stateName]: value });
     }
 
-        //  Fetch submission to update the vocab (GET)
-        fetchvocab = () => {
+        //  Fetch submission for  vocab ---=(GET)
+        fetchVocab = () => {
             const { vocabId } = this.state;
     
             if (!vocabId) {
@@ -252,8 +240,9 @@ export default class Edit extends Component {
               .then(data => {        
                 console.log('vocab details retrieved:', data);   
                 this.setState({
-                  englishVocab: data.englishVocab,
-                  basqueVocab: data.basqueVocab,
+                  englishVocab: data.english,
+                  basqueVocab: data.basque,
+                  vocabLessonNumber: data.lesson_id, 
                   loading: false,
                   get_vocab_success: true,
                   put_vocab_success: false,
@@ -266,21 +255,15 @@ export default class Edit extends Component {
               });
         }
     
-    
-
-
-
-        // TODO       *** add lesson number ****
-
             // Handle form submission to update the vocab (PUT)
             handleVocabSubmit = (event) => {
             event.preventDefault();
     
-            const { vocabId, englishVocab, basqueVocab, newEnglishVocab, newBasqueVocab } = this.state;
+            const { vocabId, englishVocab, basqueVocab, vocabLessonNumber } = this.state;
     
             // Create payload with updated englishVocab and basqueVocab... or creating NEW ones
-            const updatedvocab = { vocabId, english: englishVocab, basque: basqueVocab, newEnglishVocab, newBasqueVocab };
-    
+            const updatedvocab = { english: englishVocab, basque: basqueVocab, lesson_id: vocabLessonNumber };
+
             this.setState({ loading: true, error: null });
     
                 //    PUT request to update the vocab
@@ -312,16 +295,13 @@ export default class Edit extends Component {
                 });
         }
     
-    
-    
-    
-    
-        handleDeletevocab = (vocabId) => {
+        // Handle form submission to DELETE the vocab (DELETE)
+        handleDeleteVocab = (vocabId) => {
             if (!vocabId) {
                 this.setState({ error: 'No vocab ID specified' });
                 return;
             }
-            const confirmvocabDelete = window.confirm('ARE YOU SURE you want to delete this vocab ???');     // TODO ... ADD `${vocabId}`
+            const confirmvocabDelete = window.confirm('ARE YOU SURE you want to delete this vocab ???');   
                 if (confirmvocabDelete ) {
                     fetch(`http://127.0.0.1:5000/vocab/${vocabId}`, {  
                     method: 'DELETE',
@@ -330,7 +310,7 @@ export default class Edit extends Component {
                         if (!response.ok) {
                         throw new Error('Failed to delete vocab');
                         }
-                        return response.json();
+                        return response.text(); 
                     })
                     .then((data) => {
                         console.log('vocab deleted:', data);
@@ -351,18 +331,14 @@ export default class Edit extends Component {
                 }
             };
     
-    
-    
-    
-    
-    
+                //  (POST)  for new vocab
             handleNewVocabSubmit = (event) => {
                 event.preventDefault();
         
-                const { newEnglishVocab, newBasqueVocab, vocabLessonNumber ,lesson_id } = this.state;
+                const { newEnglishVocab, newBasqueVocab, vocabLessonNumber } = this.state;
         
                 // Create  payload for new englishVocab and basqueVocab
-                const newvocab = { english: newEnglishVocab, basque: newBasqueVocab, lesson_id: lesson_id };
+                const newvocab = { english: newEnglishVocab, basque: newBasqueVocab, lesson_id: vocabLessonNumber };
     
                 this.setState({ loading: true, error: null });
                            
@@ -394,53 +370,23 @@ export default class Edit extends Component {
                     this.setState({ error: error.message, loading: false });
                     });
             }
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     render() {
         const { 
-            lessonId, title, description, loading, error, 
-            get_success, put_success, delete_success, create_success, 
-            vocabId, englishVocab, basqueVocab, newEnglishVocab, newBasqueVocab, 
-            vocabLessonNumber,     english, basque,       lesson_id,
-            get_vocab_success, put_vocab_success, delete_vocab_success, create_vocab_success
+            lessonId, title, description, error, get_success, put_success, delete_success, create_success, 
+            vocabId, get_vocab_success, put_vocab_success, delete_vocab_success, create_vocab_success
             } = this.state;
 
         return (
 
             <div className='general-page edit'>
 
-
-
                 <div>
                     <h1> Editor page (for Admins only)  </h1>
                 </div>
                 <div className='spacer60 '/>
                 <div className='editor-area'>
-
-                    <div className='lesson-editor box'>
+                    <div className='lesson-editor box'>        
                         LESSON EDITOR
                         <div className='spacer10 '/>
                         <div>
@@ -509,13 +455,11 @@ export default class Edit extends Component {
                             </form>
                         </div>
 
-
                         {/* Section for deleting a lesson.  */}
                         <div className='manage box'>  
                             <button onClick={() => this.handleDeleteLesson(lessonId)}> Delete lesson with ID shown above? </button>
                         </div>
                         <div className='spacer60 '/>
-                            
 
                         {/* Section for creating a lesson.  */}
                         <div className='manage box'>  
@@ -550,8 +494,6 @@ export default class Edit extends Component {
 
                         <div className='spacer60 '/>
 
-
-
                         {/* Section for showing all lessons.  */}
                         <div className='manage box'>  
                             <button>Show all lessons</button> 
@@ -559,27 +501,9 @@ export default class Edit extends Component {
                         </div>
                     </div>     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-             
-                    <div className='vocab-editor box'>
-                        VOCAB EDITOR
-                        <div className='spacer10 '/>
+                    <div className='vocab-editor box'>             
+                        VOCAB EDITOR        
+                        <div className='spacer10 '/>    
                         <div>
                             {get_vocab_success && <p>Vocab retrieved !</p>}  
                             {put_vocab_success && <p>Vocab updated successfully!</p>}  
@@ -591,9 +515,7 @@ export default class Edit extends Component {
                         {/* Section for retieving vocab.  */}
 
                         <div className='manage box'>  
-
                             <button onClick={this.fetchVocab}>Get Vocab</button>
-
                             <label htmlFor="get_vocab_id">Enter vocab ID#: </label>
                             <input 
                                 type="number" 
@@ -604,19 +526,11 @@ export default class Edit extends Component {
                                 min="1" 
                                 max="5000" 
                             />
-
-                            {/* <button>Get vocab</button>  
-                            <br/>
-                            <label for="get_vocab_id">Enter vocab ID#: </label>
-                            <input type="number" id="get_vocab_id" name="vocab_number" min="1" max="100"  />  */}
                         </div>
                         
-
                         {/* Section for updating vocab.  */}
 
                         <div className='manage box'>  
-
-
                             <form onSubmit={this.handleVocabSubmit}>
                                 <div>
                                     <label htmlFor="vocabId">vocab ID:</label>
@@ -625,7 +539,7 @@ export default class Edit extends Component {
                                     id="vocabId"
                                     name="vocabId" 
                                     min="1" max="5000"
-                                    value={vocabId}
+                                    value={this.state.vocabId} // value={vocabId}
                                     onChange={this.handleInputChange}
                                     required
                                     />
@@ -634,10 +548,10 @@ export default class Edit extends Component {
                                     <label htmlFor="lesson_id">Lesson Number:</label>
                                     <input
                                     type="number"
-                                    id="lesson_id"
-                                    name="lesson_id" 
+                                    id="vocabLessonNumber"
+                                    name="vocabLessonNumber" 
                                     min="1" max="100"
-                                    value={vocabId}
+                                    value={this.state.vocabLessonNumber} // value={vocabLessonNumber}
                                     onChange={this.handleInputChange}
                                     required
                                     />
@@ -649,8 +563,7 @@ export default class Edit extends Component {
                                     id="english"
                                     name="english"  
                                     minlength="3" maxlength="40" size="40"
-                                    value={this.state.englishVocab}
-                                    // value={english}   ***PREVIOUS***
+                                    value={this.state.englishVocab} // value={english} 
                                     onChange={this.handleInputChange}
                                     required
                                     />
@@ -661,68 +574,39 @@ export default class Edit extends Component {
                                     id="basque"
                                     name="basque"  
                                     minlength="3" maxlength="40" size="40"
-                                    value={this.state.basqueVocab}
-                                    // value={basque} ***PREVIOUS***
+                                    value={this.state.basqueVocab} // value={basque} 
                                     onChange={this.handleInputChange}
                                     required
                                     />
                                 </div>
                                 <button type="submit">Save Changes</button>
                             </form>
-                            {/* <button>Edit vocab</button>  
-                            <br/>
-                            Vocab ID 
-                            <input type="number" id="vocab_id" name="vocab_number" min="1" max="100" />
-                            <br/>
-                            Lesson number 
-                            <input type="number" id="lesson_number" name="lesson_number" min="1" max="100" />
-                            <br/>
-                            Vocab English
-                            <input type="text" id="vocab_english" name="vocab_english" required minlength="1" maxlength="40" size="40" />
-                            <br/>
-                            Vocab Basque 
-                            <input type="text" id="vocab_basque" name="vocab_basque" required minlength="1" maxlength="40" size="40" />
-                         */}
+
                         </div>
 
-
-
-                        
                         {/* Section for deleting vocab.  */}
                         <div className='manage box'>  
-                            <button onClick={() => this.handleDeleteVocab(vocabId)}> Delete Vocab with ID shown above? </button>
+                            <button onClick={() => this.handleDeleteVocab(vocabId)}> 
+                                Delete Vocab with ID shown above? 
+                            </button>
                         </div>
                         <div className='spacer60 '/>
-                      
-                        {/* <div className='manage box'>  
-                            <button>Delete vocab</button> Delete vocab shown above? 
-                        </div>
-                        <div className='spacer60 '/> */}
-
-
-
-
-
 
                         {/* Section for creating Vocab.  */}
                         <div className='manage box'>  
-
                         <form onSubmit={this.handleNewVocabSubmit}>
-
                                 <div>
                                     <label htmlFor="newVocabLessonNumber">For Lesson Number:</label>
                                     <input
                                     type="number"
-                                    id="lesson_id"
-                                    name="lesson_id" 
+                                    id="newVocabLessonNumber"
+                                    name="vocabLessonNumber" 
                                     min="1" max="100"
-                                    value={this.state.lesson_id}
-                                    // value={lesson_id}  ***PREVIOUS***
-                                    onChange={this.handleNewVocabInputChange}
+                                    value={this.state.vocabLessonNumber} // value={lesson_id} 
+                                    onChange={this.handleInputChange} // onChange={this.handleNewVocabInputChange}  
                                     required
                                     />
                                 </div>
-
                                 <div>
                                     <label htmlFor="newEnglishVocab">New English Vocab :</label>
                                     <input
@@ -731,7 +615,7 @@ export default class Edit extends Component {
                                     name="newEnglishVocab"  
                                     minlength="3" maxlength="40" size="40"
                                     value={this.state.newEnglishVocab}
-                                    onChange={this.handleNewVocabInputChange}
+                                    onChange={this.handleInputChange} // onChange={this.handleNewVocabInputChange}
                                     required
                                     />
                                 </div>
@@ -742,47 +626,23 @@ export default class Edit extends Component {
                                     name="newBasqueVocab"  
                                     minlength="3" maxlength="40" size="40"
                                     value={this.state.newBasqueVocab}
-                                    onChange={this.handleNewVocabInputChange}
+                                    onChange={this.handleInputChange} // onChange={this.handleNewVocabInputChange} 
                                     required
                                     />
                                 </div>
                                 <button type="submit">Create New Vocab</button>
                     
                             </form>
-
-
-                            {/* <button>Create vocab</button>  
-                            <br/>                           
-                            Lesson number
-                            <input type="number" id="new_lesson_number" name="new_lesson_number" min="1" max="100"  />
-                            <br/>                           
-                            Vocab English
-                            <input type="text" id="new_vocab_title" name="new_vocab_title" required minlength="1" maxlength="40" size="40" />
-                            <br/>
-                            Vocab Basque 
-                            <input type="text" id="new_vocab_description" name="new_vocab_description" required minlength="1"   maxlength="40" size="40" />
-                             */}
-                            
-                            
                             <div className='spacer60 '/>
-
                             <div className='manage box'>  
                                 <button>Show all vocab </button> 
                                 <br/>for lesson #                             
                                 <input type="number" id="lesson_number" name="lesson_number" min="1" max="100"  /> 
                                 <br/>**Under construction** 
                             </div>
-
-
                         </div>
-
                     </div> 
-               
-
                 </div>
-
-
-
             </div>
         );
     }
