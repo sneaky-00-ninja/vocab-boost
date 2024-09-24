@@ -14,7 +14,20 @@
 
     .header-top-row {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
+        align-items: flex-start;            
+
+        .top-right {
+            font-size: 1em;
+        }
+        
+        
+        .top-left {
+            font-size: 1em;
+            display: flex;
+            flex-direction: row;
+        }
 
 
 
@@ -22,7 +35,8 @@
     .header-bottom-row {
         display: flex;
         justify-content: space-between;
-
+        align-items: flex-end;
+        justify-items: start;
     }
 
     .header-nav-link {
@@ -36,18 +50,22 @@
     display: flex;
     margin: 6px;
     background-color: rgb(30, 39, 53);
-    align-self: flex-end
-    
 }
-
 
 
 .logo {
     width: 50vw;
     margin: 6px;
-    background-color: rgb(112 127 148);    height: 500px;
+    background-color: rgb(105 120 141);    
+    height: 500px;
     width: 50%vw;
-
 }
 
 
+.menu-toggle {
+    display: none; /* Hide by default */
+    font-size: 30px;
+    cursor: pointer;
+    //padding: 10px;
+    margin-right: 20px;
+}

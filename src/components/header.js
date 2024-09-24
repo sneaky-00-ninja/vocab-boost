@@ -6,42 +6,61 @@ import logoImg from "../images/logo.png";
 
 
 export default class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isMenuOpen: false, 
+        };
+    }
+
+    toggleMenu = () => {
+        this.setState(prevState => ({ isMenuOpen: !prevState.isMenuOpen }));
+    };
+
+
     render() {
 
         const { handleLoginClick } = this.props;  
         const { handleLogoutClick } = this.props;  
+        const { isMenuOpen } = this.state;
 
 
         return (
-            <div className='header'>
+            <div className='header phone-header'>
 
-                <div className='header-top-row'>
+                <div className='header-top-row phone-header'>
 
-                    <div className='header-links top-left'>
-                        <div className="header-nav-link">
-                            <NavLink to="/" activeclassname="nav-link-active">
-                            HOME 
-                            </NavLink>
+                    <div className='header-links top-left phone-header'>
+                        <div className={`menu-toggle ${isMenuOpen ? "open" : ""}`} onClick={this.toggleMenu}>
+                                &#9776; <span className='ham-text'> &lt; Toggle menu </span> 
                         </div>
-                        <span className='span10'/>
-                        <div className="header-nav-link">
-                            <NavLink to="/about" activeclassname="nav-link-active">
-                             About
-                            </NavLink>
-                        </div>
-                        <span className='span10'/>
-                        <div className="header-nav-link">
-                            <NavLink to="/contact" activeclassname="nav-link-active">
-                            Contact  
-                            </NavLink>
-                        </div>
-                        <span className='span30'/>
-                        <div className='user-status'>
-                            User status : {this.props.admin ? "Admin" : "Guest"}
+
+                        <div className={`menu-items ${isMenuOpen ? "show" : "hide"}`}>
+                            <div className="header-nav-link">
+                                <NavLink to="/" activeclassname="nav-link-active">
+                                HOME 
+                                </NavLink>
+                            </div>
+                            <span className='span10'/>
+                            <div className="header-nav-link">
+                                <NavLink to="/about" activeclassname="nav-link-active">
+                                About
+                                </NavLink>
+                            </div>
+                            <span className='span10'/>
+                            <div className="header-nav-link">
+                                <NavLink to="/contact" activeclassname="nav-link-active">
+                                Contact  
+                                </NavLink>
+                            </div>
+                            <span className='span30'/>
+                            <div className='user-status'>
+                                User status : {this.props.admin ? "Admin" : "Guest"}
+                            </div>
                         </div>
                     </div>
                     
-                    <div className='header-links top-right'>
+                    <div className='header-links top-right phone-header'>
                         {this.props.admin ? (
                                 <div> 
                                     <button onClick={handleLogoutClick}>
@@ -51,7 +70,7 @@ export default class Header extends Component {
                             ) : (
                                 <div className="header-nav-link">
                                 <NavLink to="/login" activeclassname="nav-link-active">
-                                    Administrator Log In. 
+                                    Admin Log In. 
                                 </NavLink>
                             </div>
                             )
@@ -60,9 +79,9 @@ export default class Header extends Component {
 
                 </div>
 
-                <div className='header-bottom-row'>
+                <div className='header-bottom-row phone-header'>
 
-                    <div className='header-links bottom-left'>
+                    <div className='header-links bottom-left phone-header'>
                     
                         <div className="header-nav-link">
                             <NavLink to="/lesson" activeclassname="nav-link-active">
@@ -88,7 +107,7 @@ export default class Header extends Component {
                         }}                    
                     
                     />
-                    <div className='header-links bottom-right'>
+                    <div className='header-links bottom-right phone-header'>
                         <div className="header-nav-link">
 
                             {this.props.admin ? (

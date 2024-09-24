@@ -382,7 +382,7 @@ export default class Edit extends Component {
             <div className='general-page edit'>
 
                 <div>
-                    <h1> Editor page (for Admins only)  </h1>
+                    <h2> Editor page (for Admins only)  </h2> Not suitable for editing from a phone screen.
                 </div>
                 <div className='spacer60 '/>
                 <div className='editor-area'>
