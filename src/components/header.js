@@ -105,7 +105,6 @@ export default class Header extends Component {
                             backgroundSize: 'auto 100%', // Width is auto, height is 100% to stretch vertically
                             backgroundPosition: 'center'
                         }}                    
-                    
                     />
                     <div className='header-links bottom-right phone-header'>
                         <div className="header-nav-link">
@@ -114,7 +113,6 @@ export default class Header extends Component {
                                 <div> Admin view active </div> 
                                 ) : (
                                 <div>  
-                                    <button onClick={handleLoginClick}> Admin TEST Log In </button>
                                     <span className='span10'/>
                                     <span className='span10'/>
                                     <NavLink to="/signup" activeclassname="nav-link-active">
