@@ -20,7 +20,7 @@ export default class Lesson extends Component {
 
     fetchVocabList = async (lessonId) => {
         try {
-            const response = await fetch(`http://localhost:5000/vocab_list/${lessonId}`);
+            const response = await fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/vocab_list/${lessonId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch list');
             }

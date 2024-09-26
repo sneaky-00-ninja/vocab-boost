@@ -63,7 +63,7 @@ export default class Edit extends Component {
                 
         
         //    GET request  // *****-- LESSON --*****
-        fetch(`http://127.0.0.1:5000/lesson/${lessonId}`)   
+        fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/lesson/${lessonId}`)   
           .then(response => {
             if (response.status === 404) {            // ## for error 404:; Not Found !
                 throw new Error('Lesson not found');
@@ -103,7 +103,7 @@ export default class Edit extends Component {
         this.setState({ loading: true, error: null });
 
             //    PUT request to update the lesson
-        fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {
+        fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/lesson/${lessonId}`, {
             method: 'PUT',
             headers: {
             'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ export default class Edit extends Component {
         }
         const confirmLessonDelete = window.confirm('ARE YOU SURE you want to delete that ???');     
             if (confirmLessonDelete ) {
-                fetch(`http://127.0.0.1:5000/lesson/${lessonId}`, {  
+                fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/lesson/${lessonId}`, {  
                 method: 'DELETE',
                 })
                 .then((response) => {
@@ -178,7 +178,7 @@ export default class Edit extends Component {
             this.setState({ loading: true, error: null });
                        
         // Send a POST request for new lesson        
-            fetch(`http://127.0.0.1:5000/lesson`, {
+            fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/lesson`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -227,7 +227,7 @@ export default class Edit extends Component {
             this.setState({ loading: true, error: null });
                     
             //    GET request 
-            fetch(`http://127.0.0.1:5000/vocab/${vocabId}`)   
+            fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/vocab/${vocabId}`)   
               .then(response => {
                 if (response.status === 404) {              // ## for error 404:; Not Found !
                     throw new Error('vocab not found');
@@ -267,7 +267,7 @@ export default class Edit extends Component {
             this.setState({ loading: true, error: null });
     
                 //    PUT request to update the vocab
-            fetch(`http://127.0.0.1:5000/vocab/${vocabId}`, {
+            fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/vocab/${vocabId}`, {
                 method: 'PUT',
                 headers: {
                 'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ export default class Edit extends Component {
             }
             const confirmvocabDelete = window.confirm('ARE YOU SURE you want to delete this vocab ???');   
                 if (confirmvocabDelete ) {
-                    fetch(`http://127.0.0.1:5000/vocab/${vocabId}`, {  
+                    fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/vocab/${vocabId}`, {  
                     method: 'DELETE',
                     })
                     .then((response) => {
@@ -343,7 +343,7 @@ export default class Edit extends Component {
                 this.setState({ loading: true, error: null });
                            
             // Send a POST request for new vocab
-                fetch(`http://127.0.0.1:5000/vocab`, {
+                fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/vocab`, {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json',

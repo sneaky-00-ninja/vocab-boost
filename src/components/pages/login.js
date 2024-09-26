@@ -14,7 +14,7 @@ export default class Login extends Component {
 
 
     compareUserData = () => {
-        fetch('http://localhost:5000/user/1')
+        fetch('https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/user/1')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch user data');
