@@ -13,11 +13,6 @@ export default class Lesson extends Component {
         };
     }
 
-    // componentDidMount() {
-    //     this.fetchVocabList(this.props.lessonId);
-    // }
-
-
     fetchVocabList = async (lessonId) => {
         try {
             const response = await fetch(`https://dlm-vocab-boost-back-62aecfe988d1.herokuapp.com/vocab_list/${lessonId}`);
@@ -47,39 +42,22 @@ export default class Lesson extends Component {
         }));
     }
 
-
     handleChooseLesson = () => {
         this.fetchVocabList(this.state.selectedLesson);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     render() {
-        const { selectedLesson, lessonVocabList, currentIndex, isLessonLoaded, error } = this.state;
+        const { lessonVocabList, currentIndex, error } = this.state;
 
         //   show error, if any
         if (error) {
             return <div>Error: {error}</div>;
         }
-
  
         const currentVocab = lessonVocabList[currentIndex];
 
-
-
-
-
         return (
-            <div className='general-page lesson'>
+            <div className='dark-page'>
 
            {/* Display the current vocab item */}
            {currentVocab ? (
@@ -114,8 +92,6 @@ export default class Lesson extends Component {
                         </button>
                     </div>
 
-
-
                 </div>
                 ) : (
                     <>
@@ -128,30 +104,6 @@ export default class Lesson extends Component {
                     </>
                 )
             }
-            
-
-
-                            {/* *** PRIOR LAYOUT ***
-                <div className='step-buttons'>
-                    <div className='step-back'>
-                        <button onClick={this.previousVocabItem} disabled={currentIndex === 0}>
-                            Previous
-                        </button>
-                    </div>
-                    <div className='spacer10'/>
-                    <div className='step-forward'>
-                        <button onClick={this.nextVocabItem} disabled={currentIndex === lessonVocabList.length - 1}>
-                            Next
-                        </button>
-                    </div>
-                </div> */}
-
-
-
-
-
-
-
 
                 <div className='spacer60'/>
 
@@ -172,11 +124,6 @@ export default class Lesson extends Component {
                         <span className='smaller-text'>  (Under construction) </span>
                     </div>
                 </div>
-
-
-
-
-
 
             </div>
         );

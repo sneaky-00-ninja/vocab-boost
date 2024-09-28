@@ -1,21 +1,20 @@
-.general-page {
-    height: 650px;
+.dark-page{
+    min-height: 650px;
     color: blanchedalmond;
- //   background-color: darkslategrey;
+   background-color: black;
 }
 
-.general-grey {
+.general-page {
+    min-height: 650px;
     color: blanchedalmond;
     background-color: darkslategrey;
 }
 
 .homepage {
+    min-height: 650px;
     color: lightyellow;
     background-color: darkblue;
 }
-
-
-
 
 .editor-area {
     display: grid;
@@ -23,24 +22,19 @@
     height: 600px;
 }
 
-.lesson-editor {
-    display: flex;
-    flex-direction: column;
+.editor-parent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
-
-
 
 .box {
     //padding: 7px white;
     border: solid 5px rgb(218, 206, 206);
     background-color: rgb(19, 90, 151); 
-}
-
-.manage {
     text-align: left;
-
 }
 
 .smaller-text {
     font-size: 0.7em;
 }
+

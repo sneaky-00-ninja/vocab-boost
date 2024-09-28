@@ -6,7 +6,7 @@ import Carousel from "../carousel";
 export default class Home extends Component {
     render() {
         return (
-            <div className='general-page homepage'>
+            <div className='homepage'>
 
                 <div> 
                     <Carousel/>

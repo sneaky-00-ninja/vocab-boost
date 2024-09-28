@@ -20,17 +20,16 @@ export default class Header extends Component {
 
     render() {
 
-        const { handleLoginClick } = this.props;  
         const { handleLogoutClick } = this.props;  
         const { isMenuOpen } = this.state;
 
 
         return (
-            <div className='header phone-header'>
+            <div className='header  '>
 
-                <div className='header-top-row phone-header'>
+                <div className='header-top-row  '>
 
-                    <div className='header-links top-left phone-header'>
+                    <div className='header-links top-left  '>
                         <div className={`menu-toggle ${isMenuOpen ? "open" : ""}`} onClick={this.toggleMenu}>
                                 &#9776; <span className='ham-text'> &lt; Toggle menu </span> 
                         </div>
@@ -60,7 +59,7 @@ export default class Header extends Component {
                         </div>
                     </div>
                     
-                    <div className='header-links top-right phone-header'>
+                    <div className='header-links top-right  '>
                         {this.props.admin ? (
                                 <div> 
                                     <button onClick={handleLogoutClick}>
@@ -79,9 +78,9 @@ export default class Header extends Component {
 
                 </div>
 
-                <div className='header-bottom-row phone-header'>
+                <div className='header-bottom-row  '>
 
-                    <div className='header-links bottom-left phone-header'>
+                    <div className='header-links bottom-left  '>
                     
                         <div className="header-nav-link">
                             <NavLink to="/lesson" activeclassname="nav-link-active">
@@ -106,22 +105,18 @@ export default class Header extends Component {
                             backgroundPosition: 'center'
                         }}                    
                     />
-                    <div className='header-links bottom-right phone-header'>
+                    <div className='header-links bottom-right  '>
                         <div className="header-nav-link">
 
                             {this.props.admin ? (
                                 <div> Admin view active </div> 
                                 ) : (
                                 <div>  
-                                    <span className='span10'/>
-                                    <span className='span10'/>
+                                    &nbsp;
                                     <NavLink to="/signup" activeclassname="nav-link-active">
                                         Sign Up 
                                     </NavLink>
-                                    <span className='span10'/>
-
-
-                                        for full access   
+                                    &nbsp; &nbsp; for full access   
                                 </div> 
                                 )
                             }

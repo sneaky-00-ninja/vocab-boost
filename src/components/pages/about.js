@@ -4,7 +4,7 @@ export default class About extends Component {
     render() {
     
         return (
-            <div className='general-page about'>
+            <div className='general-page'>
                 <div>
                     <h1> About </h1>
                     <p>  
@@ -29,16 +29,10 @@ export default class About extends Component {
                     </p>
                     <p>  
                         -D. McNabb-
-                    </p>
-
-                        
-
-
-                    
+                    </p>                    
                 </div>
                 <div className='spacer60 '/>
             </div>
-
         );
     }
 }

@@ -64,7 +64,7 @@ export default class Login extends Component {
         const { entryUsername, entryPassword } = this.state;
 
         return (
-            <div className='general-page'>
+            <div className='dark-page'>
                 <div>
                     {this.props.admin ? (
                         <>

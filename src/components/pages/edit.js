@@ -167,6 +167,7 @@ export default class Edit extends Component {
             }
         };
 
+            // process to create new lesson        
         handleNewSubmit = (event) => {
             event.preventDefault();
     
@@ -331,7 +332,7 @@ export default class Edit extends Component {
                 }
             };
     
-                //  (POST)  for new vocab
+                //  process to create new vocab
             handleNewVocabSubmit = (event) => {
                 event.preventDefault();
         
@@ -371,6 +372,7 @@ export default class Edit extends Component {
                     });
             }
 
+
     render() {
         const { 
             lessonId, title, description, error, get_success, put_success, delete_success, create_success, 
@@ -378,15 +380,13 @@ export default class Edit extends Component {
             } = this.state;
 
         return (
-
-            <div className='general-page edit'>
-
+            <div className='dark-page '>
                 <div>
-                    <h2> Editor page (for Admins only)  </h2> Not suitable for editing from a phone screen.
+                    <h2> Editor page (for Admins only)  </h2> Editing not recommended from a phone screen.
                 </div>
                 <div className='spacer60 '/>
-                <div className='editor-area'>
-                    <div className='lesson-editor box'>        
+                <div className='editor-parent'>
+                    <div className='lesson-editor-main lesson-editor box'>        
                         LESSON EDITOR
                         <div className='spacer10 '/>
                         <div>
@@ -398,9 +398,8 @@ export default class Edit extends Component {
                         </div>
 
                         {/* Section for retieving a lesson.  */}
-                        <div className='manage box'>  
+                        <div className='lesson-editor box'>  
                             <button onClick={this.fetchLesson}>Get Lesson</button>
-
                             <label htmlFor="get_lesson_id">Enter lesson ID#: </label>
                             <input 
                                 type="number" 
@@ -411,10 +410,11 @@ export default class Edit extends Component {
                                 min="1" 
                                 max="100" 
                             />
+                            <span className='span10'/>
                         </div>
-                        
+
                         {/* Section for updateing a lesson.  */}
-                        <div className='manage box'>  
+                        <div className='lesson-editor box'>  
                             <form onSubmit={this.handleSubmit}>
                                 <div>
                                     <label htmlFor="lessonId">Lesson ID:</label>
@@ -456,13 +456,13 @@ export default class Edit extends Component {
                         </div>
 
                         {/* Section for deleting a lesson.  */}
-                        <div className='manage box'>  
+                        <div className='lesson-editor box'>  
                             <button onClick={() => this.handleDeleteLesson(lessonId)}> Delete lesson with ID shown above? </button>
                         </div>
                         <div className='spacer60 '/>
 
                         {/* Section for creating a lesson.  */}
-                        <div className='manage box'>  
+                        <div className='lesson-editor box'>  
                             <form onSubmit={this.handleNewSubmit}>
                                 <div>
                                     <label htmlFor="title">New Lesson Title:</label>
@@ -491,17 +491,16 @@ export default class Edit extends Component {
                     
                             </form>
                         </div>
-
                         <div className='spacer60 '/>
 
                         {/* Section for showing all lessons.  */}
-                        <div className='manage box'>  
+                        <div className='lesson-editor box'>  
                             <button>Show all lessons</button> 
                             <br/>**Under construction** 
                         </div>
                     </div>     
 
-                    <div className='vocab-editor box'>             
+                    <div className='vocab-editor-main vocab-editor box'>             
                         VOCAB EDITOR        
                         <div className='spacer10 '/>    
                         <div>
@@ -513,8 +512,7 @@ export default class Edit extends Component {
                         </div>
 
                         {/* Section for retieving vocab.  */}
-
-                        <div className='manage box'>  
+                        <div className='vocab-editor box'>  
                             <button onClick={this.fetchVocab}>Get Vocab</button>
                             <label htmlFor="get_vocab_id">Enter vocab ID#: </label>
                             <input 
@@ -529,8 +527,7 @@ export default class Edit extends Component {
                         </div>
                         
                         {/* Section for updating vocab.  */}
-
-                        <div className='manage box'>  
+                        <div className='vocab-editor box'>  
                             <form onSubmit={this.handleVocabSubmit}>
                                 <div>
                                     <label htmlFor="vocabId">vocab ID:</label>
@@ -585,7 +582,7 @@ export default class Edit extends Component {
                         </div>
 
                         {/* Section for deleting vocab.  */}
-                        <div className='manage box'>  
+                        <div className='vocab-editor box'>  
                             <button onClick={() => this.handleDeleteVocab(vocabId)}> 
                                 Delete Vocab with ID shown above? 
                             </button>
@@ -593,8 +590,8 @@ export default class Edit extends Component {
                         <div className='spacer60 '/>
 
                         {/* Section for creating Vocab.  */}
-                        <div className='manage box'>  
-                        <form onSubmit={this.handleNewVocabSubmit}>
+                        <div className='vocab-editor box'>  
+                            <form onSubmit={this.handleNewVocabSubmit}>
                                 <div>
                                     <label htmlFor="newVocabLessonNumber">For Lesson Number:</label>
                                     <input
@@ -631,10 +628,11 @@ export default class Edit extends Component {
                                     />
                                 </div>
                                 <button type="submit">Create New Vocab</button>
-                    
                             </form>
                             <div className='spacer60 '/>
-                            <div className='manage box'>  
+
+                            {/* Section for showing all vocab.  */}
+                            <div className='vocab-editor box'>  
                                 <button>Show all vocab </button> 
                                 <br/>for lesson #                             
                                 <input type="number" id="lesson_number" name="lesson_number" min="1" max="100"  /> 

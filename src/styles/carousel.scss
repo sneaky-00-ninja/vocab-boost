@@ -6,7 +6,7 @@
     place-items: center;
   }
   
-  .carousel {        //  slider
+  .carousel {        //  
     height: 200px;
     margin: auto;
     position: relative;
@@ -16,13 +16,13 @@
     overflow: hidden;
   }
     
-  .carousel-track  {       //  slide-track
+  .carousel-track  {       //  center of band, where the flags(slides) will travel.
     display: flex;
     width: calc(250px * 12); 
-    animation: scroll 60s linear infinite;
+    animation: scroll 60s linear infinite;  // set speed (less time to complete = faster).
   }
   
-  @keyframes scroll {
+  @keyframes scroll {   // direction settings for scroll.
     0% {
       transform: translateX(0);
     }
@@ -30,10 +30,8 @@
       transform: translateX(calc(-250px * 3));
     }
   }
-  
-  
-    
-  .carousel-slide {       //  slide
+      
+  .carousel-slide {       //  each combined flag is a slide.
     height: 150px;
     width: 250px;
     display: flex;
