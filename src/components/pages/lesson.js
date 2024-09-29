@@ -26,6 +26,11 @@ export default class Lesson extends Component {
         }
     }
 
+    // Popup for clicking the "Go to other lesson" button 
+    handleClick = () => {
+        alert('Not yet available');
+      };
+
     //  move to the next vocab line
     nextVocabItem = () => {
         this.setState((priorStep) => ({
@@ -99,7 +104,9 @@ export default class Lesson extends Component {
 
                         <p>No lesson selected</p>
                         <div>
-                            <button onClick={this.handleChooseLesson}>GET Lesson 1</button>
+                            <button onClick={this.handleChooseLesson}>Go to Lesson 1</button>
+                        <div className='spacer30'/>
+                        <button onClick={this.handleClick}>Go to other lesson</button>
                         </div>
                     </>
                 )
@@ -111,8 +118,8 @@ export default class Lesson extends Component {
                     <div className='restart'>  
                         <button>Go to start</button>
                         <span className='smaller-text'>  (Under construction) </span>
-                    </div>
                     <div className='spacer10'/>
+                    </div>
                     <div className='end'> 
                         <button>Go to End</button>
                         <span className='smaller-text'>  (Under construction) </span>

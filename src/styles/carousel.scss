@@ -22,7 +22,7 @@
     animation: scroll 60s linear infinite;  // set speed (less time to complete = faster).
   }
   
-  @keyframes scroll {   // direction settings for scroll.
+  @keyframes scroll {   // motion settings for scroll feature.
     0% {
       transform: translateX(0);
     }
